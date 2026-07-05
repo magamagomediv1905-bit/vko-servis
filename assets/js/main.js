@@ -26,6 +26,24 @@ document.addEventListener('DOMContentLoaded', function () {
     a.addEventListener('click', function(){ toggleMobile(false); });
   });
 
+  /* ---------- Mobile nav accordion groups ---------- */
+  document.querySelectorAll('.mnav-toggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var group = btn.closest('.mnav-group');
+      if(!group) return;
+      var willOpen = !group.classList.contains('is-open');
+      document.querySelectorAll('.mnav-group.is-open').forEach(function(g){
+        if(g !== group){
+          g.classList.remove('is-open');
+          var t = g.querySelector('.mnav-toggle');
+          if(t) t.setAttribute('aria-expanded', 'false');
+        }
+      });
+      group.classList.toggle('is-open', willOpen);
+      btn.setAttribute('aria-expanded', String(willOpen));
+    });
+  });
+
   /* ---------- Scroll reveal ---------- */
   var revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
   if('IntersectionObserver' in window){
