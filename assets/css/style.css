@@ -277,9 +277,6 @@ section{ position:relative; }
   box-shadow:0 30px 80px rgba(0,0,0,.45);
   outline:1px solid rgba(255,255,255,.14);
 }
-.hero-baf-caption{
-  margin-top:16px; text-align:center; font-size:13.5px; color:#8FC9C1; text-transform:none;
-}
 @media (max-width:1080px){
   .hero-grid{ grid-template-columns:1fr; gap:56px; }
   .hero-baf{ max-width:520px; margin:0 auto; width:100%; }
@@ -704,18 +701,6 @@ a.adv-card:hover::before{
 .section--dark .step p{ color:#BFE0DB; }
 
 /* =========================================================
-   TEAM
-   ========================================================= */
-.team-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:22px; }
-.team-card{ text-align:center; }
-.team-photo{ border-radius:0; overflow:hidden; aspect-ratio:3/4; margin-bottom:16px; box-shadow:var(--shadow-soft); position:relative; }
-.team-photo img{ width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease-out); }
-.team-card:hover .team-photo img{ transform:scale(1.06); }
-.team-card h4{ font-size:17px; font-weight:600; }
-.team-card span{ font-size:13.5px; color:var(--ink-soft); display:block; margin-top:4px; }
-.team-card .exp{ display:inline-block; margin-top:8px; font-size:12px; font-weight:700; color:var(--teal-600); background:var(--grad-brand-soft); padding:5px 12px; border-radius:0; }
-
-/* =========================================================
    REVIEWS
    ========================================================= */
 .review-track{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
@@ -797,8 +782,9 @@ a.adv-card:hover::before{
 .footer-col ul li{ margin-bottom:11px; }
 .footer-col a{ font-size:14.5px; color:#BFE0DB; transition:color .2s; }
 .footer-col a:hover{ color:var(--mint-400); }
-.footer-social{ display:flex; gap:10px; margin-top:22px; }
-.footer-social a{ width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; transition:background .3s; }
+.footer-social-label{ display:block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#8FC9C1; margin-top:24px; margin-bottom:10px; }
+.footer-social{ display:flex; gap:10px; margin-top:0; }
+.footer-social a{ width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; transition:background .3s; font-size:12px; font-weight:700; }
 .footer-social a:hover{ background:var(--teal-500); }
 .footer-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:26px; font-size:13px; color:#5F9992; flex-wrap:wrap; gap:12px; }
 
@@ -1043,7 +1029,7 @@ a.adv-card:hover::before{
 }
 @media (max-width:640px){
   .section{ padding:80px 0; }
-  .adv-grid, .services-grid, .team-grid, .footer-grid, .districts{ grid-template-columns:1fr; }
+  .adv-grid, .services-grid, .footer-grid, .districts{ grid-template-columns:1fr; }
   .checklist{ grid-template-columns:1fr; }
   .cta-banner{ padding:44px 26px; flex-direction:column; text-align:center; }
   .hero-stats{ gap:28px; }
