@@ -8,13 +8,13 @@
     kvartira: {
       label: 'Уборка квартир', baseArea: 40,
       types: [
-        { id:'generalnaya',        name:'Генеральная уборка',            base:5000,  extra:110 },
-        { id:'podderzhivayushaya', name:'Поддерживающая (экспресс)',     base:3500,  extra:70  },
-        { id:'posle-pozhara',      name:'Уборка после пожара',           base:11000, extra:160 },
-        { id:'raz-v-nedelu',       name:'Уборка раз в неделю',           base:3500,  extra:60  },
-        { id:'odnokomnatnye',      name:'Однокомнатные квартиры',        base:3500,  extra:0   },
-        { id:'srochnaya',          name:'Срочная уборка',                base:5000,  extra:110 },
-        { id:'posle-remonta',      name:'Уборка после ремонта',          base:7500,  extra:140 }
+        { id:'generalnaya',        name:'Генеральная уборка',            base:7000,  extra:110 },
+        { id:'podderzhivayushaya', name:'Поддерживающая (экспресс)',     base:5500,  extra:70  },
+        { id:'posle-pozhara',      name:'Уборка после пожара',           base:13000, extra:160 },
+        { id:'raz-v-nedelu',       name:'Уборка раз в неделю',           base:5500,  extra:60  },
+        { id:'odnokomnatnye',      name:'Однокомнатные квартиры',        base:5500,  extra:0   },
+        { id:'srochnaya',          name:'Срочная уборка',                base:7000,  extra:110 },
+        { id:'posle-remonta',      name:'Уборка после ремонта',          base:9500,  extra:140 }
       ]
     },
     dom: {
@@ -67,15 +67,15 @@
     okna: {
       label: 'Мытьё окон',
       lines: [
-        { id:'odnostvorch', name:'Одностворчатое окно', rate:250 },
-        { id:'dvustvorch',  name:'Двустворчатое окно',   rate:350 },
-        { id:'trehstvorch', name:'Трёхстворчатое окно',  rate:450 },
-        { id:'nestandart',  name:'Нестандартные окна',   rate:500 },
-        { id:'vitrazh',     name:'Витраж',               rate:450 },
-        { id:'balkon',      name:'Балкон (створка)',     rate:250 },
-        { id:'reshetki',    name:'Оконные решётки',      rate:230 },
-        { id:'zhalyuzi',    name:'Жалюзи (створка)',     rate:250 },
-        { id:'sayding',     name:'Сайдинг (балкон)',     rate:480 }
+        { id:'odnostvorch', name:'Одностворчатое окно', rate:500 },
+        { id:'dvustvorch',  name:'Двустворчатое окно',   rate:600 },
+        { id:'trehstvorch', name:'Трёхстворчатое окно',  rate:700 },
+        { id:'nestandart',  name:'Нестандартные окна',   rate:750 },
+        { id:'vitrazh',     name:'Витраж',               rate:700 },
+        { id:'balkon',      name:'Балкон (створка)',     rate:500 },
+        { id:'reshetki',    name:'Оконные решётки',      rate:480 },
+        { id:'zhalyuzi',    name:'Жалюзи (створка)',     rate:500 },
+        { id:'sayding',     name:'Сайдинг (балкон)',     rate:730 }
       ]
     },
     smert: { label:'Уборка после смерти' }
