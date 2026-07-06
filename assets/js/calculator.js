@@ -91,6 +91,17 @@
 
   function money(n){ return Math.round(n).toLocaleString('ru-RU'); }
 
+  /* Reads a number field, clamps it to [min,max] and writes the clamped value
+     back into the input so users can't submit negative, zero or absurd values
+     even if they type past the min/max or use up/down arrows past the limit. */
+  function readClamped(input, min, max, fallback){
+    var v = parseFloat(input.value);
+    if(isNaN(v)) v = fallback;
+    v = Math.max(min, Math.min(max, v));
+    if(String(v) !== input.value) input.value = v;
+    return v;
+  }
+
   function buildPanelHTML(key, cfg){
     if(key === 'kvartira' || key === 'dom'){
       var opts = cfg.types.map(function(t){
@@ -98,15 +109,15 @@
       }).join('');
       return '<div class="calc-grid">'
         + '<div class="calc-field"><label>Вид уборки</label><select data-role="type">'+opts+'</select></div>'
-        + '<div class="calc-field"><label>Площадь, м²</label><input type="number" min="10" step="5" value="'+cfg.baseArea+'" data-role="area">'
-        + '<small>Базовая цена — до '+cfg.baseArea+' м², дальше стоимость растёт с площадью</small></div>'
+        + '<div class="calc-field"><label>Площадь, м²</label><input type="number" min="10" max="1000" step="5" value="'+cfg.baseArea+'" data-role="area">'
+        + '<small>Базовая цена — до '+cfg.baseArea+' м², дальше стоимость растёт с площадью. Площадь: от 10 до 1000 м²</small></div>'
         + '</div>';
     }
     if(key === 'ofis'){
       var opts = cfg.types.map(function(t){ return '<option value="'+t.id+'">'+t.name+'</option>'; }).join('');
       return '<div class="calc-grid">'
         + '<div class="calc-field"><label>Вид уборки</label><select data-role="type">'+opts+'</select></div>'
-        + '<div class="calc-field"><label>Площадь, м²</label><input type="number" min="10" step="10" value="300" data-role="area"></div>'
+        + '<div class="calc-field"><label>Площадь, м²</label><input type="number" min="10" max="20000" step="10" value="300" data-role="area"></div>'
         + '</div>';
     }
     if(key === 'meropriyatie'){
@@ -115,7 +126,7 @@
       }).join('');
       return '<div class="calc-grid">'
         + '<div class="calc-field"><label>Вид уборки</label><select data-role="type">'+opts+'</select></div>'
-        + '<div class="calc-field"><label>Площадь, м²</label><input type="number" min="10" step="10" value="200" data-role="area"></div>'
+        + '<div class="calc-field"><label>Площадь, м²</label><input type="number" min="10" max="20000" step="10" value="200" data-role="area"></div>'
         + '</div>';
     }
     if(key === 'divan'){
@@ -124,19 +135,19 @@
       return '<div class="calc-grid">'
         + '<div class="calc-field"><label>Изделие</label><select data-role="item">'+itemOpts+'</select></div>'
         + '<div class="calc-field"><label>Материал обивки</label><select data-role="fabric">'+fabricOpts+'</select></div>'
-        + '<div class="calc-field"><label>Количество</label><input type="number" min="1" step="1" value="1" data-role="qty"></div>'
+        + '<div class="calc-field"><label>Количество</label><input type="number" min="1" max="50" step="1" value="1" data-role="qty"></div>'
         + '</div>';
     }
     if(key === 'kovry'){
       return '<div class="calc-grid">'
-        + '<div class="calc-field"><label>Площадь ковров, м²</label><input type="number" min="1" step="1" value="15" data-role="area">'
+        + '<div class="calc-field"><label>Площадь ковров, м²</label><input type="number" min="1" max="1000" step="1" value="15" data-role="area">'
         + '<small>от '+cfg.rate+' ₽/м²</small></div>'
         + '</div>';
     }
     if(key === 'okna'){
       var lines = cfg.lines.map(function(l){
         return '<div class="calc-line"><div class="calc-line-name">'+l.name+'<small>от '+l.rate+' ₽</small></div>'
-          + '<input type="number" min="0" step="1" value="0" data-role="line" data-rate="'+l.rate+'"></div>';
+          + '<input type="number" min="0" max="200" step="1" value="0" data-role="line" data-rate="'+l.rate+'"></div>';
       }).join('');
       return '<div class="calc-lines">'+lines+'</div>';
     }
@@ -177,37 +188,37 @@
 
     if(key === 'kvartira' || key === 'dom'){
       var typeId = panel.querySelector('[data-role="type"]').value;
-      var area = parseFloat(panel.querySelector('[data-role="area"]').value) || 0;
+      var area = readClamped(panel.querySelector('[data-role="area"]'), 10, 1000, cfg.baseArea);
       var t = cfg.types.filter(function(x){ return x.id === typeId; })[0];
       total = t.base + Math.max(0, area - cfg.baseArea) * t.extra;
     } else if(key === 'ofis'){
       var typeId = panel.querySelector('[data-role="type"]').value;
-      var area = parseFloat(panel.querySelector('[data-role="area"]').value) || 0;
+      var area = readClamped(panel.querySelector('[data-role="area"]'), 10, 20000, 300);
       var t = cfg.types.filter(function(x){ return x.id === typeId; })[0];
       var tier = t.tiers.filter(function(tr){ return area <= tr[0]; })[0] || t.tiers[t.tiers.length - 1];
       total = area * tier[1];
       note = 'Расчёт по тарифу за м² согласно действующему прайс-листу.';
     } else if(key === 'meropriyatie'){
       var typeId = panel.querySelector('[data-role="type"]').value;
-      var area = parseFloat(panel.querySelector('[data-role="area"]').value) || 0;
+      var area = readClamped(panel.querySelector('[data-role="area"]'), 10, 20000, 200);
       var t = cfg.types.filter(function(x){ return x.id === typeId; })[0];
       if(t.rate == null){ dogovornaya = true; }
       else { total = area * t.rate; note = 'Расчёт по тарифу за м² согласно действующему прайс-листу.'; }
     } else if(key === 'divan'){
       var itemId = panel.querySelector('[data-role="item"]').value;
       var fabricIdx = parseInt(panel.querySelector('[data-role="fabric"]').value, 10);
-      var qty = parseFloat(panel.querySelector('[data-role="qty"]').value) || 1;
+      var qty = readClamped(panel.querySelector('[data-role="qty"]'), 1, 50, 1);
       var it = cfg.items.filter(function(x){ return x.id === itemId; })[0];
       total = it.prices[fabricIdx] * qty;
       note = 'Финальная стоимость уточняется после осмотра изделия и диагностики загрязнений.';
     } else if(key === 'kovry'){
-      var area = parseFloat(panel.querySelector('[data-role="area"]').value) || 0;
+      var area = readClamped(panel.querySelector('[data-role="area"]'), 1, 1000, 15);
       total = area * cfg.rate;
       note = 'Точная цена зависит от материала и степени загрязнения ковра.';
     } else if(key === 'okna'){
       var inputs = panel.querySelectorAll('[data-role="line"]');
       inputs.forEach(function(inp){
-        var qty = parseFloat(inp.value) || 0;
+        var qty = readClamped(inp, 0, 200, 0);
         var rate = parseFloat(inp.getAttribute('data-rate')) || 0;
         total += qty * rate;
       });

@@ -497,20 +497,45 @@ document.addEventListener('DOMContentLoaded', function () {
   if(overlay){
     overlay.addEventListener('click', function(e){ if(e.target === overlay) closePopup(); });
   }
-  var popupForm = document.querySelector('.popup-card form');
-  if(popupForm){
+  document.querySelectorAll('.popup-card form').forEach(function(popupForm){
     popupForm.addEventListener('submit', function(e){
       e.preventDefault();
       var btn = popupForm.querySelector('button[type=submit]');
       var original = btn.textContent;
-      btn.textContent = 'Заявка отправлена!';
-      setTimeout(function(){
-        btn.textContent = original;
-        closePopup();
-        popupForm.reset();
-      }, 1800);
+      var action = popupForm.getAttribute('action') || '';
+
+      if(!action || action.indexOf('YOUR_FORM_ID') > -1){
+        btn.textContent = 'Форма ещё не настроена';
+        setTimeout(function(){ btn.textContent = original; }, 2200);
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Отправляем…';
+
+      fetch(action, {
+        method: 'POST',
+        body: new FormData(popupForm),
+        headers: { 'Accept': 'application/json' }
+      }).then(function(response){
+        if(response.ok){
+          btn.textContent = 'Заявка отправлена!';
+          setTimeout(function(){
+            btn.textContent = original;
+            btn.disabled = false;
+            closePopup();
+            popupForm.reset();
+          }, 1800);
+        } else {
+          throw new Error('Request failed');
+        }
+      }).catch(function(){
+        btn.textContent = 'Ошибка. Позвоните нам';
+        btn.disabled = false;
+        setTimeout(function(){ btn.textContent = original; }, 2500);
+      });
     });
-  }
+  });
 
   /* ---------- Smooth active nav dropdown a11y close on outside click ---------- */
   document.addEventListener('click', function(e){

@@ -235,7 +235,7 @@
 <section class="section--tight">
   <div class="container">
     <div class="cta-banner reveal">
-      <h3>Остались вопросы? Перезвоним вам в течение 15 минут и проконсультируем по всем вопросам.</h3>
+      <h3>Остались вопросы? Перезвоним вам в ближайшее время и проконсультируем по всем вопросам.</h3>
       <a href="#" class="btn btn-ghost-white" data-open-popup>Узнать стоимость</a>
     </div>
   </div>
@@ -288,6 +288,7 @@
     <div class="footer-bottom">
       <span>© 2009 – 2026 Клининговая компания ВКО Сервис — Москва</span>
       <a href="contacts.html">Контакты и реквизиты</a>
+      <a href="politika-konfidencialnosti.html">Политика конфиденциальности</a>
     </div>
   </div>
 </footer>
@@ -303,11 +304,12 @@
     <h3>Заказать уборку</h3>
     <p>Оставьте заявку — перезвоним в ближайшее время и назовём точную стоимость.</p>
     <div class="popup-service-tag" hidden>Выбрано: <span></span></div>
-    <form>
-      <div class="form-field"><input type="text" placeholder="Ваше имя" required></div>
-      <div class="form-field"><input type="tel" placeholder="Телефон" required></div>
+    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <input type="hidden" name="_subject" value="Новая заявка с сайта ВКО Сервис">
+      <div class="form-field"><input type="text" name="name" placeholder="Ваше имя" required minlength="2" maxlength="60" pattern="[A-Za-zА-Яа-яЁё\s\-]+" title="Имя: только буквы, от 2 до 60 символов"></div>
+      <div class="form-field"><input type="tel" name="phone" required inputmode="tel" pattern="^(\+7|8)[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$" title="Введите телефон в формате +7 999 123-45-67 или 8 999 123-45-67" placeholder="+7 999 123-45-67"></div>
       <div class="form-field">
-        <select>
+        <select name="service">
           <option>Уборка квартиры</option>
           <option>Уборка офиса</option>
           <option>Уборка дома / коттеджа</option>
@@ -316,7 +318,7 @@
           <option>Другое</option>
         </select>
       </div>
-      <label class="form-consent"><input type="checkbox" required> Согласен на обработку персональных данных</label>
+      <label class="form-consent"><input type="checkbox" required> Согласен на <a href="politika-konfidencialnosti.html" target="_blank" rel="noopener">обработку персональных данных</a></label>
       <button type="submit" class="btn btn-primary btn-block">Отправить заявку</button>
     </form>
   </div>
