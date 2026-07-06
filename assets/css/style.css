@@ -973,7 +973,7 @@ a.adv-card:hover::before{
 
 /* Photo hero — image fills the whole hero as a background, dark scrim on top,
    text content layered above it. Same architecture as the homepage .hero. */
-.page-hero--photo{ position:relative; overflow:hidden; color:var(--white); padding:150px 0 90px; }
+.page-hero--photo{ position:relative; overflow:hidden; color:var(--white); padding:150px 0 90px; aspect-ratio:16/9; }
 /* When a .breadcrumbs bar (which already carries 150px of top padding to
    clear the fixed header) sits directly above a photo hero, the hero's own
    150px top padding stacks on top of it — 300px of near-empty space before
@@ -997,7 +997,7 @@ a.adv-card:hover::before{
   backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
 }
 .page-hero--photo .btn-outline:hover{ background:rgba(6,22,20,.78); border-color:var(--mint-400); color:var(--mint-400); transform:translateY(-2px); }
-@media (max-width:640px){ .page-hero--photo{ padding:130px 0 70px; } }
+@media (max-width:640px){ .page-hero--photo{ padding:130px 0 70px; aspect-ratio:auto; } }
 
 .checklist{ display:grid; grid-template-columns:1fr 1fr; gap:10px 20px; }
 .checklist li{
