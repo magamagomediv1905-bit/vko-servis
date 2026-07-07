@@ -497,6 +497,33 @@ document.addEventListener('DOMContentLoaded', function () {
   if(overlay){
     overlay.addEventListener('click', function(e){ if(e.target === overlay) closePopup(); });
   }
+  /* ---------- Telegram notification (parallel to Formspree email) ---------- */
+  var TELEGRAM_BOT_TOKEN = '8533988784:AAGmMWNz_N4suXnoDJFOFRCTlVBLTXN7UY0';
+  var TELEGRAM_CHAT_ID = '-1003714665032';
+  function escapeHtml(str){
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function sendToTelegram(formData){
+    var fields = {};
+    formData.forEach(function(value, key){ if(value) fields[key] = value; });
+    var lines = ['<b>Новая заявка — ВКО Сервис</b>'];
+    if(fields.name) lines.push('Имя: ' + escapeHtml(fields.name));
+    if(fields.phone) lines.push('Телефон: ' + escapeHtml(fields.phone));
+    if(fields.service) lines.push('Услуга: ' + escapeHtml(fields.service));
+    if(fields.message) lines.push('Сообщение: ' + escapeHtml(fields.message));
+    Object.keys(fields).forEach(function(key){
+      if(['name','phone','service','message','_subject'].indexOf(key) === -1){
+        lines.push(escapeHtml(key) + ': ' + escapeHtml(fields[key]));
+      }
+    });
+    lines.push('Страница: ' + escapeHtml(location.href));
+    return fetch('https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: lines.join('\n'), parse_mode: 'HTML' })
+    }).catch(function(){ /* email fallback still works even if Telegram fails */ });
+  }
+
   document.querySelectorAll('.popup-card form').forEach(function(popupForm){
     popupForm.addEventListener('submit', function(e){
       e.preventDefault();
@@ -513,9 +540,12 @@ document.addEventListener('DOMContentLoaded', function () {
       btn.disabled = true;
       btn.textContent = 'Отправляем…';
 
+      var formData = new FormData(popupForm);
+      sendToTelegram(formData);
+
       fetch(action, {
         method: 'POST',
-        body: new FormData(popupForm),
+        body: formData,
         headers: { 'Accept': 'application/json' }
       }).then(function(response){
         if(response.ok){
