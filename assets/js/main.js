@@ -497,6 +497,31 @@ document.addEventListener('DOMContentLoaded', function () {
   if(overlay){
     overlay.addEventListener('click', function(e){ if(e.target === overlay) closePopup(); });
   }
+  /* ---------- Auto-format phone number as user types ---------- */
+  function formatPhoneValue(raw){
+    var digits = raw.replace(/\D/g, '');
+    if(!digits) return '';
+    if(digits.charAt(0) === '8') digits = '7' + digits.slice(1);
+    else if(digits.charAt(0) !== '7') digits = '7' + digits;
+    digits = digits.slice(0, 11);
+    var out = '+7';
+    if(digits.length > 1) out += ' ' + digits.slice(1, 4);
+    if(digits.length > 4) out += ' ' + digits.slice(4, 7);
+    if(digits.length > 7) out += '-' + digits.slice(7, 9);
+    if(digits.length > 9) out += '-' + digits.slice(9, 11);
+    return out;
+  }
+  document.addEventListener('input', function(e){
+    if(e.target && e.target.matches && e.target.matches('input[type="tel"]')){
+      e.target.value = formatPhoneValue(e.target.value);
+    }
+  });
+  document.addEventListener('focusin', function(e){
+    if(e.target && e.target.matches && e.target.matches('input[type="tel"]') && !e.target.value){
+      e.target.value = '+7 ';
+    }
+  });
+
   /* ---------- Telegram notification (parallel to Formspree email) ---------- */
   var TELEGRAM_BOT_TOKEN = '8533988784:AAGmMWNz_N4suXnoDJFOFRCTlVBLTXN7UY0';
   var TELEGRAM_CHAT_ID = '-1003714665032';
