@@ -790,8 +790,9 @@ a.adv-card:hover::before{
 .footer-col a:hover{ color:var(--mint-400); }
 .footer-social-label{ display:block; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#8FC9C1; margin-top:24px; margin-bottom:10px; }
 .footer-social{ display:flex; gap:10px; margin-top:0; }
-.footer-social a{ width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; transition:background .3s; font-size:12px; font-weight:700; }
-.footer-social a:hover{ background:var(--teal-500); }
+.footer-social a{ width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; transition:background .3s, transform .3s var(--ease-out), box-shadow .3s; font-size:12px; font-weight:700; }
+.footer-social a:hover{ background:var(--teal-500); transform:translateY(-3px); box-shadow:0 8px 18px rgba(0,0,0,.25); }
+.footer-social svg{ width:17px; height:17px; }
 .footer-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:26px; font-size:13px; color:#5F9992; flex-wrap:wrap; gap:12px; }
 
 /* =========================================================
